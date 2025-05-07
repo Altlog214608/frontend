@@ -1,0 +1,106 @@
+/* 모달 전체 배경 */
+.intro-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);  /* 어두운 배경 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+/* 모달 본체 */
+.intro-modal {
+  background-color: white;
+  width: 90%;
+  max-width: 1100px;
+  border-radius: 12px;
+  padding: 2rem;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+/* 닫기 버튼 */
+.intro-modal-close {
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  cursor: pointer;
+  color: #555;
+}
+
+/* 모달 안의 내용 정렬 */
+.intro-modal-content {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+/* 좌우 콘텐츠 영역 */
+.intro-modal-left,
+.intro-modal-right {
+  flex: 1;
+  min-width: 300px;
+}
+
+/* 제목 스타일 */
+.intro-modal-left h2,
+.intro-modal-right h2 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+/* 구분선 */
+.underline {
+  width: 80px;
+  height: 2px;
+  background-color: #444;
+  margin-bottom: 1rem;
+}
+
+/* 본문 텍스트 */
+.intro-modal-left p,
+.intro-modal-right p {
+  font-size: 1rem;
+  color: #444;
+  line-height: 1.6;
+  margin-bottom: 0.6rem;
+}
+
+/* 그래프 이미지 placeholder */
+.graph-img {
+  width: 100%;
+  height: 180px;
+  background-image: url('../../../assets/HomePage/graph_top.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  margin-top: 1rem;
+}
+
+/* 반응형 대응 */
+@media (max-width: 768px) {
+  .intro-modal-content {
+    flex-direction: column;
+  }
+
+  .intro-modal {
+    padding: 1.5rem;
+  }
+
+  .intro-modal-close {
+    top: 12px;
+    right: 14px;
+    font-size: 1.5rem;
+  }
+}

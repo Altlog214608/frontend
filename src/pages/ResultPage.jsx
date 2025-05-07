@@ -62,6 +62,8 @@ const ResultPage = () => {
     return (placed / recommended) * 100;
   }, [area, aiMaskArea]);
 
+  const clampedRatio = Math.min(Math.max(placementRatio || 0, 0), 100);
+
   const actualPanelCount = Math.floor(parseFloat(area) / 2);
 
   const treeEquivalent = useMemo(() => {
@@ -209,31 +211,40 @@ const ResultPage = () => {
                 <PieChart>
                   <Pie
                     data={[
-                      { name: '설치된 면적', value: Math.min(placementRatio, 100) },
-                      { name: '남은 면적', value: 100 - Math.min( placementRatio, 100) },
+                      { name: '설치된 면적', value: clampedRatio },
+                      { name: '남은 면적', value: 100 - clampedRatio },
                     ]}
                     startAngle={90}
                     endAngle={-270}
                     innerRadius={60}
                     outerRadius={100}
-                    paddingAngle={3}
+                    paddingAngle={0}
                     dataKey="value"
                   >
-                    <Cell key="installed" fill="#82ca9d" />
-                    <Cell key="remaining" fill="#ffffff" />
+                    <Cell
+                      key="installed"
+                      fill={
+                        clampedRatio < 30
+                          ? "#FF7043" // 연주황 (주의)
+                          : clampedRatio < 70
+                            ? "#FFD54F" // 노랑 (중간)
+                            : "#66BB6A" // 초록 (충분)
+                      }
+                    />
+                    <Cell key="remaining" fill="#E0E0E0" /> {/* 남은 면적은 회색 */}
                   </Pie>
                 </PieChart>
               </ResponsiveContainer>
               <div style={{ textAlign: 'center', marginTop: '8px', fontWeight: 'bold', fontSize: '1.2rem' }}>
-                설치율 {placementRatio.toFixed(1)}%
+                설치율 {clampedRatio.toFixed(1)}%
               </div>
             </div>
           </div>
         </div>
       </div>
 
-            {/* 탄소 저감 카드 & 차트 */}
-            <section className="carbon-section" ref={el => (sectionRefs.current[1] = el)}>
+      {/* 탄소 저감 카드 & 차트 */}
+      <section className="carbon-section" ref={el => (sectionRefs.current[1] = el)}>
         <div className="carbon-title">에너지원별 탄소배출량 비교</div>
         {carbonEmissions ? (
           <div className="carbon-layout">

@@ -136,12 +136,17 @@ section.section.section1.section-white.visible {
 }
 
 .bottom-overlay {
-  width: 76rem;
-  height: 45rem;
-  margin-top: 17rem;
-  z-index: 1;
+  width: 90%;
+  max-width: 1300px;
+  margin: 6rem auto;
+  padding: 3rem 4rem;
   background-color: white;
-  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  gap: 3rem;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); /* 약간의 그림자 */
+  border-radius: 12px;
+  z-index: 1;
 }
 
 .intro {
@@ -350,4 +355,176 @@ section.section.section1.section-white.visible {
   }
 }
 
+/* 화살표 스타일 + 위치 조정 */
+.slick-prev, .slick-next {
+  z-index: 10 !important;      /* ✅ 최상단으로 올림 */
+  top: 50%;                    /* ✅ 수직 중앙 정렬 */
+  transform: translateY(-50%);
+  position: absolute !important;  /* ✅ 위치 강제 고정 */
+}
 
+.slick-prev {
+  left: 20px !important;
+}
+
+.slick-next {
+  right: 20px !important;
+}
+
+.slick-prev:before, .slick-next:before {
+  font-size: 48px;             /* 화살표 크기 */
+  color: white;                /* 색상 */
+}
+
+/* 슬라이더 전체 감싸는 컨테이너 */
+.slider-container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* 슬라이더 안 이미지 */
+.slider-container img {
+  width: 100%;
+  height: 100vh;
+  object-fit: cover; /* 또는 contain */
+  display: block;
+  position: relative;
+  z-index: 1;
+}
+
+/* 도트 위치: 이미지 안쪽 하단 + 우선순위 강제 적용 */
+.slick-dots {
+  position: absolute !important;
+  bottom: 200px !important;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  z-index: 5 !important;
+  display: block !important;
+  text-align: center;
+}
+
+.slick-dots li button:before {
+  font-size: 12px;
+  color: white;
+  opacity: 0.75;
+}
+
+/* 오버레이 텍스트 중앙 고정 */
+.slider-overlay-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  color: white;
+  font-size: 6rem;
+  font-weight: bold;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+  pointer-events: none;  /* 클릭 방지 */
+  text-align: center;
+}
+
+.slider-overlay-text p {
+  font-size: 1.5rem;
+  color: #e4e3e3;
+}
+
+/* 바탕 레이아웃 */
+.row-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 4rem 6rem;
+  gap: 4rem;
+  box-sizing: border-box;
+}
+
+.left-content,
+.right-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.left-content .text_title3,
+.right-content .text_title3 {
+  margin-bottom: 1rem;
+}
+
+/* 텍스트 스타일 유지 */
+.text_title3 h2 {
+  text-align: left;
+  font-size: 2.2rem;
+  font-weight: bold;
+}
+
+/* 반응형 대응 (모바일에서는 세로 정렬) */
+@media (max-width: 768px) {
+  .row-container {
+    flex-direction: column;
+    padding: 2rem;
+  }
+}
+
+.card-container {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  padding: 2rem;
+}
+
+.card {
+  width: 280px;            /* 세로 직사각형 느낌 */
+  height: 420px;
+  background-color: #f5f5f5;
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+.card:hover {
+  transform: translateY(-8px);
+}
+
+.card-image-wrapper {
+  height: 70%;            /* 이미지 영역 높이 비율 */
+  overflow: hidden;
+}
+
+.card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.card:hover img {
+  transform: scale(1.05);
+}
+
+.card-overlay {
+  height: 30%;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 1rem;
+  text-align: center;
+}
+
+.card-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.card-sub {
+  font-size: 0.9rem;
+  color: gray;
+}
