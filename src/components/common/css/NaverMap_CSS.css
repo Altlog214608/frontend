@@ -1,0 +1,309 @@
+
+
+
+/* ---------- 슬라이드 패널 영역 ---------- */
+
+/* 슬라이드 열기 버튼 위치 */
+.address-slide-button {
+    position: absolute;
+    top: 296px;           
+    left: 0px;         
+}
+
+.slide-button {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+/* 지역 슬라이드 패널 */
+.address-slide {
+    position: fixed;
+    left: -250px;
+    top: 80px;
+    width: 250px;
+    height: min(calc(100vh - 80px), 850px); 
+    background-color: white;
+    z-index: 20;
+    overflow-y: auto;
+    overflow-x: auto;
+    transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.6s ease;
+    box-sizing: border-box;
+    pointer-events: auto;
+    overflow: visible;
+}
+
+
+/* 슬라이드 열림 상태 */
+.address-slide.open {
+    transform: translateX(250px); /* 오른쪽으로 이동 */
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* 슬라이드 안 콘텐츠 스타일 */
+.address-content {
+    display: flex;
+    flex-direction: column;
+    background-color: #324DDD;
+    padding: 20px;
+    justify-content: space-between;
+    align-items: stretch;
+    gap: 16px;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+.address-content p {
+    font-size: 14px;
+    color: #555;
+}
+
+/* 슬라이드 닫기 버튼 */
+.close-slide {
+    position: absolute;
+    top: 295px;
+    right: -46px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    width: auto;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.6s ease;
+    border: none;
+    outline: none;
+    background: transparent;
+}
+
+/* 슬라이드가 열리면 버튼이 제자리로 슬라이드 인 */
+.address-slide.open .close-slide {
+    transform: translateX(-50%);
+    opacity: 1 !important;
+    pointer-events: auto !important;
+}
+
+/* 슬라이드가 닫힐 때 닫기 버튼이 천천히 사라지도록 지연 */
+.address-slide:not(.open) .close-slide {
+    transform: translateX(-250px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease 0.3s, transform 0.3s ease 0.3s;
+}
+
+/* 슬라이드 내부 input */
+.address-input {
+    padding: 12px 0px 12px 6px;
+    border: 2px solid #1a2665;
+    /* border-right: none; */
+    border-radius: 8px 0 0 8px;
+    background-color: #f5f5f5;
+    font-size: 14px;
+    height: 45px;
+    width: 160px;
+    box-shadow: none;
+}
+
+/*지역 검색  버튼 */
+.address-search-button, .address-search-button-mobile{
+    /* padding: 12px 16px; */
+    border: 2px solid #1a2665;
+    /* border: none; */
+    /* border-left: none; */
+    border-radius: 0 8px 8px 0;
+    background-color: #ffffff;
+    font-size: 14px;
+    height: 45.3px;
+    box-shadow: none;
+    cursor: pointer;
+    width: 45px;
+    padding-bottom: 2px;
+}
+
+.address-search-button:hover {
+    /* border: 1px solid white;  흰색 테두리 */
+    /* color: #aaa; */
+    outline: none;
+    /* box-shadow: none;         그림자 없애기 */
+    /* border-left: none; */
+    box-shadow: 0 -1px 0 white, 0 1px 0 white, 1px 0 0 white;
+}
+
+
+.address-content .address-input::placeholder {
+    color: #aaa;
+}
+
+.address-content h3 {
+    font-size: 20px;
+    color: #ffffff;
+    margin-bottom: 0;
+}
+
+/* 위도 경도 섹션 */
+.coordinates-section {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    gap: 10px;
+    padding: 15px;
+    background-color: #D9D9D9;
+}
+
+.coordinate-input {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.coordinate-input input {
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    background-color: #f5f5f5;
+    width: 160px;
+}
+
+/* 위치 박스 */
+.location-section {
+    display: flex;
+    flex-direction: column;
+}
+
+.location-box {
+    height: auto;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 8px;
+}
+
+.location-title {
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    background-color: white;
+    border-bottom: 1px solid #C0B2B2;
+    padding-bottom: 5px;
+}
+
+
+
+@media (max-width: 420px) {
+    .address-slide {
+        position: fixed;
+        left: 0;
+        top: 92px;
+        width: 100%;
+        background-color: white;
+        transition: max-height 0.5s ease, padding 0.3s ease;
+        transform: none !important; 
+        opacity: 1 !important;
+      }
+
+
+
+    .address-slide.open .close-slide {
+        transform: translateX(0);
+        opacity: 1;
+        pointer-events: auto;
+        bottom: 46.9rem;
+        left: 21.9rem;
+        width: 61px;
+        height: 31px;
+        top: auto;
+    }
+
+    .address-slide-button {
+        position: absolute;
+        bottom: 228px;
+        left: 21.8rem;
+        top: 0;
+        height: 48px;
+        background: white;
+        padding-bottom: 2px
+    }
+
+    .address-slide.open {
+        height: auto;
+        min-width: 100%;
+        top: 92.15px;
+    }
+
+    .address-section {
+        min-height: 23rem;
+    }
+
+    .address-content {
+        height: auto;
+        background-color: transparent;
+    }
+
+    .coordinates-section {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .coordinate-input-wrapper {
+        display: flex;
+        justify-content: space-between;
+        gap: 8px;
+        width: 100%;
+    }
+
+    .coordinate-input {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .address_mobile {
+        position: fixed;
+        top: 35px;
+        width: 90%;
+        background-color: white;
+        padding: 12.5px 0px 1px 0px;
+    }
+
+    .address-input {
+        border-radius: initial;
+        width: 308px;
+        border: none;
+        background-color: white;
+    }
+
+    .address-search-button-mobile {
+        border-radius: inherit;
+        border: none;
+    }
+
+    .slide-button {
+        margin-top: 10px;
+    }
+
+
+    .close-slide img {
+        margin-bottom: 3px;
+    }
+
+    ul.search-result-list {
+        margin-top: 10px;
+    }
+
+    .search-result-list li{
+        margin-bottom: 11px;
+    }
+
+    .recent-search-list{
+        z-index: 999;
+        position: absolute;
+    }
+}

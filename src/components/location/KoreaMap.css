@@ -1,0 +1,58 @@
+
+.left-map {
+ 
+  fill: #4CAF50;
+}
+
+.region {
+  fill: #4caf50;
+  transition: fill-opacity 0.3s ease;
+  cursor: pointer;
+}
+
+
+.region:hover {
+  fill: #e4e144; 
+  transform: scale(1.05);
+  filter: drop-shadow(0 0 6px rgba(0, 0, 0, 0.3));
+  transition: transform 0.3s ease, filter 0.3s ease;
+  cursor: pointer;             
+}
+
+.region.selected {
+  stroke: #2e7d32;
+  stroke-width: 1.5;
+}
+
+.region.selected:hover {
+  transform: none;
+  filter: none;
+}
+
+@keyframes pulseBorder {
+  0% { border-color: #4caf50; }
+  50% { border-color: #a5d6a7; }
+  100% { border-color: #4caf50; }
+}
+.usage-box-updated {
+  animation: pulseBorder 1s ease-in-out;
+}
+
+.fade-up {
+  animation: fadeUp 0.8s ease;
+}
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

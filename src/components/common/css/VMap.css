@@ -1,0 +1,257 @@
+
+.shadow-popup {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 240px;
+    background: rgba(0, 0, 0, 0.75);
+    color: white;
+    padding: 16px;
+    /* border-radius: 18px; */
+    z-index: 1000;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+.sunshine_days {
+    display: flex;
+    flex-direction: column;
+}
+  
+  .analysis_date,
+  .sunshine_hours,
+  .sunlight {
+    font-size: 14px;
+}
+
+.analysis_date {
+    font-weight: bold;
+    font-size: large;
+    margin-bottom: 6px;
+}
+
+.sunshine_hours {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.sunrise_date,
+.sunset_time {
+    font-size: 14px;
+    white-space: nowrap; 
+}
+
+.sunlight {
+    display: flex;
+    flex-direction: column;
+}
+  
+.total_sunlight{
+    font-size: 14px;
+    margin-bottom: 3px;
+}
+
+.continuous_sunlight {
+    font-size: 14px;
+    margin-bottom: 23px;
+}
+
+/* .sunlight {
+    display: flex;
+    justify-content: space-between;
+
+    align-items: center;
+}
+  
+.total_sunlight,
+.continuous_sunlight {
+    font-size: 14px;
+    white-space: nowrap;
+} */
+
+.popup-header {
+    position: relative;
+    font-weight: bold;
+    margin-bottom: 12px;
+    padding-right: 32px; 
+    font-size: x-large;
+  }
+
+.analysis_time {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+  
+.analysis_time label {
+    flex-shrink: 0;
+    min-width: 100px;
+    font-size: large;
+    font-weight: bold;
+}
+  
+.analysis_time select {
+    width: 100px; /* 시간대별 간격 */
+    max-width: 100%; 
+}
+
+/* 드롭다운, 슬라이더 */
+.shadow-popup input[type="range"] {
+    width: 100%;
+}
+
+/* .shadow-popup select{
+    margin-top: 4px;
+} */
+
+/* 슬라이더 위 시간 표시용 */
+.shadow-popup .time-display {
+    display: inline-block;
+    width: 60px; /* 숫자 길이 변화 방지 */
+    text-align: left;
+    font-weight: bold;
+}
+
+/* 시간 슬라이더 컨테이너 */
+.time-slider {
+    display: flex;
+    align-items: center;
+    /* gap: 8px; */
+    /* margin-top: 4px; */
+    /* margin-bottom: 10px; */
+}
+
+.time-slider-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 10px;
+    margin-top: 2px;
+}
+
+.time-slider-container .time-slider {
+    flex: 1; /* 이 구조 안에서만 슬라이더 넓게 */
+}
+
+.Time_zone_playback {
+    display: flex;
+    gap: 8px;
+}
+
+.time-slider input[type="range"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 100%;
+    height: 4px;
+    background: #444;
+    border-radius: 2px;
+    outline: none;
+    cursor: pointer;
+}
+  
+  /* 트랙 (Chrome, Safari, Edge) */
+.time-slider input[type="range"]::-webkit-slider-runnable-track {
+    height: 4px;
+    background: #444;
+    border-radius: 2px;
+}
+  
+  /* 썸 (Chrome, Safari, Edge) */
+.time-slider input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #3a65ff;
+    cursor: pointer;
+    margin-top: -5px;
+}
+
+/* .time_play,
+.stop_time {
+    padding: 6px 10px;
+    background: #3a65ff;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+} */
+
+/* .stop_time {
+    background: #666;
+} */
+
+.time_play{
+    background-color: transparent;
+    border: none;
+}
+
+.time_play img{
+    margin-top: 4px;
+}
+
+.stop_time {
+    background-color: transparent;
+    border: none;
+}
+
+.stop_time img {
+    margin-bottom: 5px;
+    margin-top: 4px;
+}
+
+/* 라벨 + 시간 표시 줄 배치 */
+.time-slider-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.time-slider-label label {
+    font-size: medium;
+    font-weight: bold;
+}
+
+
+.time-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 4px;
+    margin-bottom: 6px;
+}
+
+.time-header .time-display {
+    font-size: 16px;
+    font-weight: bold;
+    width: auto;
+}
+  
+/* 그림자 버튼 정렬 */
+.popup-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 16px;
+}
+
+/* 공통 버튼 */
+.select-button,
+.reset-button {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 6px;
+    background: #3a65ff;
+    color: white;
+    cursor: pointer;
+}
+
+/* 초기화 버튼은 다르게 */
+.reset-button {
+    background: #666;   
+}

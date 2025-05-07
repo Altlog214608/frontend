@@ -1,0 +1,349 @@
+/* Simulation_CSS.css */
+
+/* 전체 시뮬레이션 영역 컨테이너 */
+.simulation-container {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: #f5f5f5;
+    padding-top: 80px; 
+}
+
+/* 지도 포함 본문 영역 */
+.simulation-body {
+    flex: 1;
+    position: relative;
+}
+
+/* 지도 영역 (풀스크린 지도) */
+.fullscreen-map {
+    width: 100%;
+    height: 100%;
+    background-color: #ccc;
+    position: relative;
+}
+
+/* 지도 */
+.simulation-map-wrapper {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+/* 캔버스 영역 (그리기용 등) */
+.simulation-canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+    background-color: #e0e0e0;
+}
+
+/* 우측 상단 패널 열기 버튼 위치 */
+.panel-button-topright {
+    position: fixed;
+    top: 100px;
+    right: 20px;
+    z-index: 3001;
+}
+
+/* 패널 열기 버튼 스타일 */
+.open-panel-button {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+/* ---------- 팝업 패널 ---------- */
+.popup-panel {
+    position: fixed;
+    top: 160px;
+    right: 20px;
+    width: 350px;
+    height: 800px;
+    background-color: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    z-index: 3000;
+    padding: 16px;
+    padding-top: 0;
+    box-sizing: border-box;
+    /* overflow: auto; */
+}
+
+/* 팝업 내부 */
+.popup-panel-content {
+    display: flex;
+    flex-direction: column;
+    /* overflow: auto;  */
+}
+
+/* 스크롤바 숨기기 */
+.popup-panel::-webkit-scrollbar,
+.popup-panel-content::-webkit-scrollbar {
+    width: 0px;
+    height: 0px;
+}
+
+.popup-panel::-webkit-scrollbar-thumb,
+.popup-panel-content::-webkit-scrollbar-thumb {
+    background-color: transparent;  
+}
+
+/* 닫기 버튼 이미지 스타일 */
+.close-button-area img{
+    position: fixed;
+    top: 10rem;
+    right: 20px;
+    width: 67px;
+    height: 40px;
+    border-top-right-radius: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+/* 닫기 버튼 사이즈 */
+.close-btn {
+    width: 40px;
+    height: 40px;
+}
+
+/* 닫기 박스 */
+.close-btn-layout {
+    background-color: white;
+    width: 350px;
+    height: 41px;
+    z-index: 999999;
+    margin-left: -16px;
+    position: fixed;
+    /* border-bottom: 1px solid #e0e0e0; 은은한 라인 */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05); /* 아주 부드러운 그림자 */
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+    align-items: center;   
+}
+
+/* 닫기 상단바 글씨*/
+.close-btn-layout h2{ 
+    margin-top: 6px;
+    margin-left: 8px;
+    font-size: 22px; 
+    font-weight: 550; 
+}
+
+/* 입력/이미지 영역 배치 */
+.panel-content-row {
+    display: flex;
+    flex-direction:column;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 10px;
+    margin-top: 39px;
+}
+
+/* 이미지 선택 영역 */
+.panel-image-selection {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+    width: 85%;
+    align-items: center;
+}
+
+/* 이미지 박스 및 정렬 */
+.panel-image-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.panel-image {
+    object-fit: contain;
+    background: none;
+}
+
+/* 이미지 크기 설정 */
+.panel-small {
+    width: 120px;
+    height: auto;
+}
+
+.panel-large {
+    width: 140px;
+    height: auto;
+}
+
+/* 이미지 하단 텍스트 */
+.panel-size {
+    font-size: 12px;
+    margin-top: 4px;
+    color: #444;
+}
+
+/* 입력 폼 영역 */
+.panel-form-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+}
+
+/* 입력 라벨 및 인풋 스타일 */
+.panel-info {
+    display: flex;
+    flex-direction: column;
+    min-width: auto;    
+}
+
+.panel-label {
+    font-size: 14px;
+    margin-bottom: 4px;
+    font-weight: 500;
+}
+
+.panel-input,
+.panel-result-input,
+.panel-day-input, 
+.panel-week-input, 
+.panel-month-input {
+    width: 148px;
+    padding: 6px 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 14px;
+    background-color: #fafafa;
+}
+
+/* 설치 정보 박스 */
+.panel-installation,
+.panel-estimate-box {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex: 1;
+}
+
+ul.panel-list {
+    border: 1px solid #ccc;
+    min-width: 314px;
+    height: 89px;
+    border-radius: 8px;
+    background-color: #fafafa;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+/* 패널 설치 영역 / 에너지 생산량 */
+.panel-stats-row {
+    display: flex;
+    flex-wrap: wrap; /* 컬럼이 넘어가면 자동으로 줄 바꿈 */
+    gap: 10px;
+    justify-content: space-between;
+}
+
+.simulation-donut-chart {
+    width: 100%;
+    height: 250px; /* 패널 크기 조정 */
+    background: transparent;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+/* 설치 목록 섹션 */
+.panel-info ul {
+    display: block;
+    margin-top: 12px;
+    padding-left: 0;
+}
+.panel-info li {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+.panel-info button {
+    color: rgb(0, 0, 0);
+    border: none;
+    padding: 5px;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: white;
+}
+/* ---------- 버튼 영역 ---------- */
+.complete-button-wrapper {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 16px;
+}
+
+/* 완료 버튼 / AI 배치 버튼 스타일 */
+.complete-button, .ai-input-button, .clear-ai-button {
+    background-color: black;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    z-index: 3001;
+    pointer-events: auto; /* 버튼이 클릭 가능하도록 설정 */
+}
+
+/* 햇빛 필터 버튼 */
+.sunlight-filter-button {
+    position: fixed;
+    right: 213px;
+    top: 100px;
+    z-index: 3001;
+}
+
+.filter-button {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    z-index: 3001;
+}
+
+/* 스크롤 방지 */
+body.no-scroll {
+    overflow: hidden !important;
+}
+
+@media (max-width: 420px) {
+    .simulation-container {
+        padding-top: 46px;
+    }
+
+    .panel-button-topright{
+        bottom: 18rem;
+        right: 15px;
+        top: auto;
+    }
+
+    .popup-panel {
+        top: auto;
+        right: 0;
+        width: 100%;
+        border-radius: initial;
+        top: 490px;
+        height: 305px;
+    }
+
+    .close-button-area img {
+        top: 490px;
+        right: 5px;
+    }
+}
+
+/* NaverMap / 3D Map 전환 버튼튼 */
+.switch-button{
+    position: absolute;
+    top: 16px;
+    right: 117px;
+    z-index: 3001;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}

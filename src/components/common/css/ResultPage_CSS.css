@@ -1,0 +1,461 @@
+/* ─── 공통 스타일 ─── */
+.result-page-wrapper {
+  padding: 3vw 3vw 0 3vw;
+  box-sizing: border-box;
+}
+
+.carbon-section,
+.future-section,
+.tree-section {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.carbon-section.animate,
+.future-section.animate,
+.tree-section.animate {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ─── 지도 + 시뮬 결과 ─── */
+.top-section {
+  display: flex;
+  gap: 1.5vw;
+  margin-bottom: 5vh;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start
+}
+
+.right-map {
+  flex: 2 1 600px; 
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  /* min-height: 100vh; */
+}
+
+.resullt-map-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: center;
+  margin: 1.8em 0 0.7em 0;
+}
+
+.result-map-placeholder {
+  height: 85vh;
+  width: 79rem;
+  background-color: #e0e0e0;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  /* min-height: 50vh; */
+  border-radius: 1rem;
+}
+
+.simulation-info {
+  flex: 1 1 400px;
+  display: flex;
+  /* flex-direction: row; */
+  min-width: 500px;
+  /* align-items: center; */
+  gap: 1.5rem;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.result-stats, .donut-chart-placeholder {
+  background-color: #f0f0f0;
+  border-radius: 1rem;
+  padding: 2rem;
+  min-height: 35vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.donut-chart-placeholder {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 크기 자동 전환용 래퍼 스타일 */
+.result-stats, .donut-chart-group {
+  flex: 1 1 48%;
+  width: 100%;
+  max-width: 1000px;
+  box-sizing: border-box;
+}
+
+
+.result-stats {
+  margin-top: 95px;
+  position: relative;
+}
+
+.result-stats h3 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  position: absolute;
+  text-align: center;
+  top: -50px;
+}
+
+.result-stats p {
+  font-size: 1.2rem;
+  margin: 1rem 0;
+  white-space: pre;
+  text-align: left;
+  width: 100%;
+}
+
+.power_generation h3 {
+  font-size: 1.5rem;
+  text-align: center;
+  font-weight: bold;
+  margin-top: -3.3rem;
+}
+
+.donut-chart-group {
+  display: flex;
+  flex-direction: column;
+  background-color: #f0f0f0;
+  border-radius: 1rem;
+  margin-top: 2.5rem;
+}
+
+/* ─── 탄소 절감 ─── */
+.carbon-section {
+  min-height: 60vh;
+}
+
+.carbon-title {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+.carbon-layout {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 3vw;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.carbon-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 3.5rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.carbon-right {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 3.5rem;
+  min-width: 0;
+}
+
+.carbon-card, .carbon-chart-placeholder {
+  padding: 1.5rem;
+  border-radius: 0.8rem;
+  font-size: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #dd323b85;
+  min-height: 141px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  cursor: default;
+}
+
+.carbon-card.solar {
+  background-color: #A1DD32;
+  color: #000;
+  min-height: 331px;
+}
+
+.carbon-chart-placeholder {
+  background-color: #e0e0e0;
+  min-height: 331px;
+  font-size: 1.1rem;
+  color: #666;
+}
+
+.carbon-amount {
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.oil-amount,
+.coal-amount,
+.natural-gas-amount,
+.biomass-amount {
+  color: #EE0A16;
+}
+
+.solar-amount {
+  color: #324DDD;
+}
+
+.card-text {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+/* ─── 미래 예측 ─── */
+.future-section {
+  text-align: center;
+  padding: 2rem;
+  border-radius: 1rem;
+}
+
+.future-section h2 {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  margin-top: 6rem;
+}
+
+.line-chart-placeholder {
+  background-color: #e9f4ff;
+  height: 75vh;
+  border-radius: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.future-section.animate {
+  padding-top: 0px;
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+
+
+/* ─── 나무 효과 ─── */
+.tree-section {
+  position: relative;
+  height: 90vh;
+  background: url('../../../assets/ResultPage/grassy_field.png') no-repeat center center;
+  background-size: cover;
+  z-index: 0;
+}
+
+.tree-content {
+  position: relative;
+  padding: 2rem;
+  z-index: 1;
+}
+
+.tree-text h2 {
+  font-size: 2rem;
+  text-align: center;
+  color: #000;
+}
+
+.tree-effect {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: nowrap;
+  margin-top: 12vh;
+  gap: 2vw;
+}
+
+.tree-effect-item {
+  flex: 1;
+  max-width: 40vw;
+  min-width: 250px;
+}
+
+.tree-effect-item p {
+  margin: 0.5rem 0;
+  text-align: left;
+  margin-left: 14rem;
+  font-size: 1.5rem;
+}
+
+.tree-effect-item h3 {
+  font-size: 2rem;
+  margin-left: 13rem;
+  min-width: 489px;
+}
+
+.future-section, .tree-section {
+  min-height: 100vh;
+}
+
+/* ─── 모바일 대응 스타일 ─── */
+@media (max-width: 420px) {
+
+  .resullt-map-title {
+    margin-top: 3.5em;
+  }
+
+  .simulation-info {
+    flex: 1 1 400px;
+    display: flex;
+    flex-direction: row;
+    min-width: 200px;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    margin-top: 3rem;
+  }
+
+  .top-section {
+    gap: 0;
+  }
+
+  .donut-chart-group {
+    margin-top: 3rem;
+  }
+
+  .power_generation h3{
+    font-size: 1.3rem;
+    margin-top: -2.4rem;
+  }
+
+  .result-stats {
+    min-width: 145px;
+    margin-top: 3rem;
+  }
+
+  .result-stats h3 {
+    font-size: 1.3rem;
+    width: 300px;
+    margin-top: 0.8rem;
+  }
+
+  .result-stats p{
+    font-size: 0.7rem;
+    margin-right: 51px;
+    margin-top: 0;
+    margin-bottom: 2px;
+  }
+
+  .right-map{
+    min-height: 60vh;
+  }
+
+  .result-map-placeholder {
+    max-height: 53vh;
+    min-height: auto;
+  }
+
+  .result-stats, .donut-chart-placeholder { 
+    min-height: auto;
+    max-height: 17vh;
+  }
+
+  .donut-chart-placeholder {
+    min-height: 17vh;
+  }
+
+  .carbon-title {
+    font-size: 1.5rem;
+    margin-top: 5rem;
+  }
+
+  .future-section h2{
+    font-size: 1.5rem;
+    margin-top: 5rem;
+  }
+
+  .card-text {
+    font-size: 1rem;
+    font-weight: bolder;
+  }
+  
+  .carbon-amount {
+    font-size: 0.8rem;
+  }
+
+  .carbon-card, .carbon-chart-placeholder{
+    min-height: 147px;
+  }
+
+  .carbon-chart-placeholder {
+    min-height: 293px;
+  }
+
+  .carbon-cards {
+    gap: 1.5rem;
+  }
+
+  .carbon-card.solar {
+    min-height: 293px;
+  }
+
+  .carbon-right{
+    gap: 1.6rem;
+  }
+
+  .tree-section h2 {
+    font-size: 1.5rem; /* 폰트 크기 조정 */
+    text-align: center;
+    margin-top: 0;
+  }
+
+  /* 나무 효과 텍스트 크기 및 여백 */
+  .tree-effect-item h3 {
+    font-size: 18px; /* 폰트 크기 조정 */
+    margin-bottom: 1rem;
+    margin-left: 0;
+    overflow-wrap: break-word; /* 텍스트가 넘칠 때 줄 바꿈 */
+  }
+
+  /* 나무 효과 텍스트 크기 및 정렬 */
+  .tree-effect-item p {
+    font-size: 11px; /* 폰트 크기 조정 */
+    text-align: left;
+    line-height: 1.5;
+    margin-bottom: 0.8rem;
+    margin-left: 0;
+  }
+
+  /* 나무 효과 아이템 간의 여백 및 정렬 */
+  .tree-effect {
+    display: block;
+    margin-top: 2rem;
+  }
+
+  .tree-effect-item {
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  /* 트리 콘텐츠를 모바일 화면에 맞게 레이아웃 조정 */
+  .tree-content {
+    padding: 0 1rem; /* 좌우 패딩 추가 */
+  }
+
+  /* 모바일에서는 텍스트가 잘 보이도록 패딩 추가 */
+  .tree-text {
+    padding: 1rem 0;
+  }
+  
+  /* 글씨가 화면에 제대로 나오는지 확인하기 위해 overflow 설정 */
+  .tree-text, .tree-effect-item {
+    overflow-wrap: break-word; /* 텍스트가 넘칠 때 줄 바꿈 */
+    word-wrap: break-word; /* 긴 단어가 넘어가지 않도록 설정 */
+  }
+
+}

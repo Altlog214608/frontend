@@ -1,0 +1,353 @@
+/* * {
+  outline: 1px solid red !important;
+} */
+
+/* 기본 설정 */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: auto;
+  overflow-y: auto; 
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+::-webkit-scrollbar {
+  display: none; /* 스크롤바를 숨깁니다 */
+}
+
+img,
+.fullscreen-img,
+.fullscreenA-img,
+.solar-img,
+.top-overlay {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  object-fit: cover;
+  display: block;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+/* 전체 컨테이너 설정 */
+.Home-container {
+  width: calc(100% - 20px);
+  padding-top: 80px;
+  margin-left: 10px;
+  background: linear-gradient(to bottom, #ffffff 43%, #aacadb 49%, #5d6b77 71%, #a6c2d8 75%);
+  overflow-x: visible;
+  box-sizing: border-box; /* 전체 크기 포함 */
+  height: auto;
+}
+
+/* 섹션 공통 스타일 */
+.section {
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(50px);
+  transition: opacity 1s ease-out, transform 1s ease-out;
+  min-height: 90vh;
+  margin-bottom: 10px;
+  padding: 0;
+  width: 100%;
+  box-sizing: border-box;
+  will-change: opacity, transform;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+}
+
+.section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 맨 위 배경 색상 클래스 */
+section.section.section1.section-white.visible {
+  background-color: white;
+}
+
+.section1 {
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 0px; 
+  position: relative;
+  min-height: 100vh;
+}
+
+.section2 {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 0;
+  min-height: 100vh; 
+  background-image: url('../../../assets/HomePage/renewable_energy.png');
+  background-size: cover;
+  text-align: center;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+}
+
+.text-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  max-width: 1000px;
+  text-align: left;
+}
+
+.underline {
+  width: 100px;        
+  height: 1px;       
+  background-color: #000000;  
+  margin-bottom: 20px;
+  margin-left: 1px;
+}
+
+.text-overlay .text_title1 h2{
+  font-size: 2.8rem;
+  font-weight: normal;
+  padding-bottom: 10px;
+}
+
+.top-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  min-height: 450px;
+  object-fit: cover;
+  align-items: center;
+  z-index: 0;
+  pointer-events: none;
+  background-image: url(../../../assets/HomePage/intro_green.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.bottom-overlay {
+  width: 76rem;
+  height: 45rem;
+  margin-top: 17rem;
+  z-index: 1;
+  background-color: white;
+  align-items: center;
+}
+
+.intro {
+  margin-top: 4rem;
+  margin-left: 7rem;
+}
+
+.text_title3 h2{
+  text-align: left;
+  font-size: 2.8rem;
+  font-weight: normal;
+}
+
+.underline3 {
+  width: 100px;           /* 선 길이 */
+  height: 1px;           /* 선 두께 */
+  background-color: #000000;  /* 선 색 */
+  margin-bottom: 20px;
+  margin-top: 10px;
+}
+
+.text_4 {
+  max-width: 553px;
+}
+
+.text_4 p{
+  margin-top: 1px;
+  text-align: left;
+}
+
+.graph {
+  background-image: url('../../../assets/HomePage/graph_top.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  max-width: 561px;
+  height: 39vh;
+  align-items: center;
+  margin-left: 15rem;
+  margin-top: 3rem;
+}
+
+/* 전체화면 이미지 스타일 */
+.fullscreen-img,
+.fullscreenA-img,
+.solar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* 이미지가 섹션을 덮도록 설정 */
+  display: block;
+  margin: 0;
+  padding: 0;
+  border: none;
+  position: absolute; /* 절대 위치 설정 */
+  top: 50%; /* 수직 중앙 */
+  left: 50%; /* 수평 중앙 */
+  transform: translate(-50%, -50%); /* 중앙 정렬을 위한 오프셋 */
+}
+
+
+.solar-img {
+  z-index: 1;
+}
+
+.section3 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+  background-image: url('../../../assets/HomePage/solar_power_background.png');
+  background-repeat: no-repeat;
+  min-height: 100vh;
+}
+
+
+.underline2{
+  width: 100px;           /* 선 길이 */
+  height: 1px;           /* 선 두께 */
+  background-color: #000000;  /* 선 색 */
+  margin-bottom: 20px;
+  margin-left: 1px;
+}
+
+.solar-text .text_title2 h2{
+  font-size: 2.8rem;
+  font-weight: normal;
+  padding-bottom: 10px;
+  margin-top: 10px;
+}
+
+.section3 .content {
+  margin: 0;
+  padding: 0;
+}
+
+.section3 .button-group {
+  margin-top: 0; 
+  padding: 0;
+}
+
+/* 버튼 그룹 */
+.button-group {
+  position: absolute;
+  bottom: 5%;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  z-index: 2;
+}
+
+.custom-btn {
+  background: none;
+  border: none;
+  color: black;
+  font-size: 1.5rem;
+  padding: 6px 12px;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+
+@media (max-width: 420px) {
+  .Home-container {
+    padding-top: 44px;
+    width: calc(100% - 20px);
+    margin: 0 10px;
+  }
+
+  .section1,
+  .section2,
+  .section3 {
+    min-height: 100vh;
+    background-size: cover;
+    background-position: center;
+  }
+
+  .section2 {
+    margin-top: -138px;
+  }
+
+  .section3 {
+    margin-top: 0;
+  }
+
+  .text-overlay {
+    width: 90%;
+    text-align: left;
+    transform: translate(-50%, -50%);
+  }
+
+  .text-overlay .text_title1 h2,
+  .solar-text .text_title2 h2,
+  .text_title3 h2 {
+    font-size: 1.5rem;
+    text-align: left;
+  }
+
+  .text_4 {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0 10px;
+  }
+
+  .text_4 p {
+    font-size: 15px;
+    line-height: 1.6;
+    text-align: left;
+  }
+
+  .graph {
+    background-size: contain;
+    margin: 2rem auto;
+    height: 25vh;
+    max-width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .button-group {
+    flex-direction: column;
+    gap: 12px;
+    bottom: 3%;
+    width: 15rem;
+  }
+
+  .custom-btn {
+    font-size: 1.2rem;
+    text-align: left;
+  }
+
+  .top-overlay {
+    min-height: 300px;
+    background-position: center;
+  }
+
+  .bottom-overlay {
+    width: 79%;
+    height: auto;
+    margin: 10rem auto;
+  }
+
+  .intro {
+    margin: 2rem 1rem;
+  }
+}
+
+

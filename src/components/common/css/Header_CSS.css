@@ -1,0 +1,345 @@
+/* 기본 세팅 */
+html, body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  /* 선명도 설정 */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 스크롤바 숨기기 */
+body {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+body::-webkit-scrollbar {
+  display: none;
+}
+
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 40px;
+  background-color: white;
+  border-bottom: 1px solid #ccc;
+  z-index: 1000;
+  position: fixed;
+  top: 0;
+  left: 0; 
+  width: 100%;
+}
+
+/* 로고 영역 */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.logo-icon,
+.logo-title {
+  display: inline-block;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+
+.logo-icon {
+  width: 40px;
+  height: 30px;
+}
+
+.logo-title {
+  width: 120px; 
+  height: 30px;
+}
+
+/* 인트로 */
+.home-page .logo-icon {
+  background-image: url('../../../assets/Header/icon1.png');
+}
+.home-page .logo-title {
+  background-image: url('../../../assets/Header/intro.png');
+  width: 60px;
+}
+
+/* 대쉬보드 */
+.info-page .logo-icon {
+  background-image: url('../../../assets/Header/icon2.png');
+}
+
+.info-page .logo-title {
+  background-image: url('../../../assets/Header/Dashboard-logo.png');
+}
+
+/* 시뮬레이션 */
+.sim-page .logo-icon {
+  background-image: url('../../../assets/Header/icon3.png');
+}
+
+.sim-page .logo-title {
+  background-image: url('../../../assets/Header/Simulation-logo.png');
+}
+
+/* 결과 */
+.result-page .logo-icon {
+  background-image: url('../../../assets/Header/icon4.png');
+  width: 30px;
+}
+
+.result-page .logo-title {
+  background-image: url('../../../assets/Header/SimulationResult-logo.png');
+  width: 175px;
+}
+
+/* 아이콘 영역 */
+.icons {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-left: auto;   
+}
+
+ 
+.icons button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  outline: none;      
+  box-shadow: none;   
+}
+
+
+.icons button img {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+}
+
+
+.icons div img {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+}
+
+
+.icons .menu-group {
+  display: flex;
+  gap: 0;
+}
+
+#icon1_img {
+  background-image: url('../../../assets/Header/icon1.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 40px;
+  height: 28px;
+  padding-right: 40px;
+  border: none;
+  cursor: pointer;
+}
+
+.home-page #icon1_img {
+  background-image: url('../../../assets/Header/intro-btn.png');
+  padding-right: 0; 
+  min-width: 40px;
+  max-width: 50px;
+  height: 60px;
+}
+
+#icon2_img {
+  background-image: url('../../../assets/Header/Vector-2.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 22px;
+  height: 22px;
+  padding-right: 40px;
+  border: none;
+  cursor: pointer;
+}
+
+.info-page #icon2_img {
+  background-image: url('../../../assets/Header/info-btn.png');
+  padding-right: 0;
+  min-width: 40px;
+  max-width: 50px;
+  height: 60px;
+}
+
+#icon3_img {
+  background-image: url('../../../assets/Header/Vector-1.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 25px;
+  height: 25px;
+  padding-right: 40px;
+  border: none;
+  cursor: pointer;
+}
+
+.sim-page #icon3_img {
+  background-image: url('../../../assets/Header/sim_btn.png');
+  padding-right: 0;
+  min-width: 40px;
+  max-width: 50px;
+  height: 60px;
+}
+
+
+#icon4_img {
+  background-image: url('../../../assets/Header/Vector.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 25px;
+  height: 25px;
+  padding-right: 40px;
+  border: none;
+  cursor: pointer;
+}
+
+.result-page #icon4_img {
+  background-image: url('../../../assets/Header/result-btn.png');
+  padding-right: 0;
+  min-width: 40px;
+  max-width: 50px;
+  height: 60px;
+}
+
+.menu-group {
+  display: none;
+}
+
+/* 모바일에서 아래로 펼쳐지는 메뉴 */
+.dropdown-menu {
+  position: absolute;
+  top: 100%; /* 헤더 바로 아래 */
+  left: 0;
+  width: 100%;
+  background-color: #fff;
+  z-index: 999;
+  display: flex;
+  flex-direction: column; 
+  border-top: 1px solid #ddd;
+  box-shadow: 0 4px 6px rgba(255, 255, 255, 0.1);
+  animation: slideDown 0.3s ease-out;
+}
+
+.dropdown-menu button {
+  padding: 15px;
+  border: none;
+  background: none;
+  font-size: 16px;
+  text-align: left;
+  border: 1px solid rgb(0, 0, 0);
+  cursor: pointer;
+}
+
+.dropdown-menu button.active {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+/* 애니메이션 */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 420px) {
+  .header {
+    padding: 10px 10px; /* 좌우 패딩 확 줄이기 */
+  }
+
+  .logo-icon {
+    width: 30px;
+    height: 24px;
+  }
+
+  .logo-title {
+    width: 90px;
+    height: 24px;
+  }
+
+  .result-page .logo-title {
+    width: 145px;
+  }
+
+  .home-page .logo-title {
+    width: 43px;
+  }
+   
+
+  /* 아이콘 간격 조정 */
+  .icons {
+    gap: 12px;
+  }
+
+  .icons button img,
+  .icons div img {
+    width: 54px;
+    height: 58px;
+  }
+
+  .icons .menu-group {
+    gap: 4px;
+    width: 107px;
+  }
+
+  /* 아이콘 버튼들 높이 줄이기 */
+  .home-page #icon1_img,
+  .info-page #icon2_img,
+  .sim-page #icon3_img,
+  .result-page #icon4_img {
+    height: 40px;
+    min-width: 32px;
+    max-width: 40px;
+  }
+
+  #icon1_img, #icon2_img, #icon3_img, #icon4_img {
+    padding-right: 20px;
+    width: 20px;
+    height: 20px;
+  }
+
+  .menu-open .logo{
+    background-color: rgb(0, 0, 0);
+    min-height: 44px;
+    padding-left: 10px;
+    padding-right: 10px;
+    min-width: 100%;
+  }
+
+
+  .header.menu-open {
+    padding: 0;
+  }
+
+  .home-page.menu-open .logo-icon {
+    background-image: url('../../../assets/Header/Icon1_w.png');
+  }
+
+  .home-page.menu-open .logo-title {
+    background-image: url('../../../assets/Header/intro_w.png');
+  }
+  
+  
+
+}
