@@ -58,36 +58,41 @@ const HomePage = () => {
           <p>계룡건설 GreenTech sw 개발자 과정</p>
         </div>
         <Slider {...settings}>
-          <div><img src={require('../assets/HomePage/renewable_energy.png')} alt="slide1" /></div>
-          <div><img src={require('../assets/HomePage/solar_power_background.png')} alt="slide2" /></div>
-          <div><img src={require('../assets/HomePage/solar-pannel-1.jpg')} alt="slide3" /></div>
-          <div><img src={require('../assets/HomePage/solar-pannel-2.jpg')} alt="slide4" /></div>
-          <div><img src={require('../assets/HomePage/solar-pannel-3.jpg')} alt="slide5" /></div>
+          <div className="slide"><img src={require('../assets/HomePage/renewable_energy.png')} alt="slide1" /></div>
+          <div className="slide"><img src={require('../assets/HomePage/solar_power_background.png')} alt="slide2" /></div>
+          <div className="slide slide-blur"><img src={require('../assets/HomePage/back-slider-1.jpg')} alt="slide3" /></div>
+          <div className="slide slide-blur"><img src={require('../assets/HomePage/back-slider-2.jpg')} alt="slide4" /></div>
+          <div className="slide slide-blur"><img src={require('../assets/HomePage/back-slider-3.jpg')} alt="slide5" /></div>
         </Slider>
       </div>
 
-      <div className="card-container">
-        <div className="card" onClick={() => setShowIntro(true)}>
-          <img src={require('../assets/HomePage/solar-pannel-1.jpg')} alt="Intro" />
-          <div className="card-overlay">
-            <p className="card-title">소개</p>
-            <p className="card-sub">Introduction</p>
-          </div>
+      <div className='card-background'>
+        <div className="card-title-overlay-wrapper">
+          <h1 className="card-title-overlay">기능소개</h1>
         </div>
-
-        <div className="card" onClick={() => navigate('/info')}>
-          <img src={require('../assets/HomePage/solar-pannel-2.jpg')} alt="info" />
-          <div className="card-overlay">
-            <p className="card-title">info</p>
-            <p className="card-sub">info</p>
+        <div className="card-container">
+          <div className="card" onClick={() => setShowIntro(true)}>
+            <img src={require('../assets/HomePage/solar-pannel-1.jpg')} alt="Intro" />
+            <div className="card-overlay">
+              <p className="card-title">소개</p>
+              <p className="card-sub">Introduction</p>
+            </div>
           </div>
-        </div>
 
-        <div className="card" onClick={() => navigate('/simulation')}>
-          <img src={require('../assets/HomePage/solar-pannel-3.jpg')} alt="Simulation" />
-          <div className="card-overlay">
-            <p className="card-title">시뮬레이션</p>
-            <p className="card-sub">Simulation</p>
+          <div className="card" onClick={() => navigate('/info')}>
+            <img src={require('../assets/HomePage/solar-pannel-2.jpg')} alt="info" />
+            <div className="card-overlay">
+              <p className="card-title">info</p>
+              <p className="card-sub">info</p>
+            </div>
+          </div>
+
+          <div className="card" onClick={() => navigate('/simulation')}>
+            <img src={require('../assets/HomePage/solar-pannel-3.jpg')} alt="Simulation" />
+            <div className="card-overlay">
+              <p className="card-title">시뮬레이션</p>
+              <p className="card-sub">Simulation</p>
+            </div>
           </div>
         </div>
       </div>

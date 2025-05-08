@@ -380,14 +380,14 @@ section.section.section1.section-white.visible {
 .slider-container {
   position: relative;
   width: 100%;
-  height: 100vh;
+  height: 120vh;
   overflow: hidden;
 }
 
 /* 슬라이더 안 이미지 */
 .slider-container img {
   width: 100%;
-  height: 100vh;
+  height: 120vh;
   object-fit: cover; /* 또는 contain */
   display: block;
   position: relative;
@@ -410,6 +410,10 @@ section.section.section1.section-white.visible {
   font-size: 12px;
   color: white;
   opacity: 0.75;
+}
+
+.slide-blur img {
+  filter: blur(0.5px) brightness(0.85);
 }
 
 /* 오버레이 텍스트 중앙 고정 */
@@ -471,24 +475,21 @@ section.section.section1.section-white.visible {
 }
 
 .card-container {
-  height: 100%;
-  width: 100%;
   display: flex;
+  gap: 8rem;
   justify-content: center;
-  gap: 2rem;
-  padding: 2rem;
+  align-items: center;
 }
 
 .card {
-  width: 280px;            /* 세로 직사각형 느낌 */
-  height: 420px;
-  background-color: #f5f5f5;
-  position: relative;
+  width: 400px;
+  height: 600px;
+  background-color: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
   overflow: hidden;
-  border-radius: 12px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-  transition: transform 0.3s ease;
   cursor: pointer;
+  transition: transform 0.3s ease;
 }
 
 .card:hover {
@@ -504,7 +505,9 @@ section.section.section1.section-white.visible {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.4s ease;
+  display: block;
+  border-radius: 16px;
+
 }
 
 .card:hover img {
@@ -529,4 +532,35 @@ section.section.section1.section-white.visible {
 .card-sub {
   font-size: 0.9rem;
   color: gray;
+}
+
+.card-background {
+  position: relative;
+  background-color: #e5e5e5;
+  background-image: url(../../../assets/HomePage/back-4.jpg);
+  background-size: cover;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; /* 카드와 제목이 위로 붙지 않도록 */
+  padding-top: 15rem; /* 👈 이 줄 추가 */
+}
+
+.card-title-overlay-wrapper {
+  position: absolute;
+  top: 5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+}
+
+.card-title-overlay {
+  font-size: 3rem;
+  font-weight: bold;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  color: #000;
+  text-align: center;
+  margin-bottom: 2.5rem;
+  margin-top: 5rem; /* 👈 여기에 여백 줘도 됨 */
 }
