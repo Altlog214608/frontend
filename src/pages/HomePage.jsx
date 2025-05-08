@@ -11,6 +11,8 @@ const HomePage = () => {
   const navigate = useNavigate();
   const sectionRefs = useRef([]); // 각 섹션의 참조를 저장할 ref
   const [showIntro, setShowIntro] = useState(false);
+  const cardContainerRef = useRef(null);
+  const cardTitleRef = useRef(null);
 
   const settings = {
     dots: true,           // 하단 점 네비게이션 표시
@@ -24,30 +26,52 @@ const HomePage = () => {
   };
 
   useEffect(() => {
-    // IntersectionObserver를 사용하여 섹션이 화면에 들어오면 'visible' 클래스 추가
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        } else {
+          entry.target.classList.remove('visible');
+        }
+      },
+      { threshold: 0.2 }
+    );
+
+    if (cardTitleRef.current) {
+      observer.observe(cardTitleRef.current);
+    }
+
+    if (cardContainerRef.current) {
+      observer.observe(cardContainerRef.current);
+    }
+
+    return () => {
+      if (cardTitleRef.current) observer.unobserve(cardTitleRef.current);
+      if (cardContainerRef.current) observer.unobserve(cardContainerRef.current);
+    };
+  }, []);
+
+  useEffect(() => {
+    const cards = document.querySelectorAll('.card');
+
     const observer = new IntersectionObserver(
       entries => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
-            entry.target.classList.add('visible');  // 섹션이 뷰포트에 들어오면 'visible' 클래스 추가
-          } else {
-            entry.target.classList.remove('visible');  // 섹션이 뷰포트를 벗어나면 'visible' 클래스 제거
+            entry.target.classList.add('visible');
           }
         });
       },
-      { threshold: 0.1 } // 10% 이상 보일 때 'visible' 클래스를 추가
+      { threshold: 0.2 }
     );
 
-    // 각 섹션을 관찰
-    sectionRefs.current.forEach(section => {
-      if (section) observer.observe(section);
+    cards.forEach((card, index) => {
+      card.style.transitionDelay = `${index * 0.3}s`; // 순차 등장
+      observer.observe(card);
     });
 
-    // 컴포넌트 언마운트 시 IntersectionObserver를 정리
     return () => {
-      sectionRefs.current.forEach(section => {
-        if (section) observer.unobserve(section);
-      });
+      cards.forEach(card => observer.unobserve(card));
     };
   }, []);
 
@@ -68,9 +92,14 @@ const HomePage = () => {
 
       <div className='card-background'>
         <div className="card-title-overlay-wrapper">
-          <h1 className="card-title-overlay">기능소개</h1>
+          <h1
+            className="card-title-overlay"
+            ref={cardTitleRef}
+          >
+            기능소개
+          </h1>
         </div>
-        <div className="card-container">
+        <div className="card-container" ref={cardContainerRef}>
           <div className="card" onClick={() => setShowIntro(true)}>
             <img src={require('../assets/HomePage/solar-pannel-1.jpg')} alt="Intro" />
             <div className="card-overlay">
@@ -80,7 +109,24 @@ const HomePage = () => {
           </div>
 
           <div className="card" onClick={() => navigate('/info')}>
-            <img src={require('../assets/HomePage/solar-pannel-2.jpg')} alt="info" />
+            <video
+              src={require('../assets/HomePage/chart_video_2.mp4')}
+              poster={require('../assets/HomePage/solar-pannel-1.jpg')}
+              className="card-video"
+              muted
+              preload="metadata" // 맨 앞 프레임 표시
+              loop
+              onMouseEnter={e => {
+                e.target.currentTime = 0;
+                e.target.play();
+                e.target.playbackRate = 1.5;
+              }}
+              onMouseLeave={e => {
+                e.target.pause();
+                e.target.currentTime = 0;
+                e.target.playbackRate = 1.0;
+              }}
+            />
             <div className="card-overlay">
               <p className="card-title">info</p>
               <p className="card-sub">info</p>
