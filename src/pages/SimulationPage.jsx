@@ -12,12 +12,43 @@ import { useNavigate } from "react-router-dom";
 import NaverMap from "../components/map/NaverMap";
 import VMap from "../components/map/VMap";
 
+import solar1 from '../assets/SimulationPage/solar-1.png';
+import area1 from '../assets/SimulationPage/area-1.png';
+import solar2 from '../assets/SimulationPage/solar-2.png';
+
 //추
 import LoadingAnimation from "./LodingAnimation";
+// import {
+//   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LabelList,
+//   Cell, PieChart, Pie
+// } from 'recharts';
+// chart.js 기반 시각화 요소 추가
 import {
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LabelList,
-  Cell, PieChart, Pie
-} from 'recharts';
+  Chart as ChartJS,
+  LineElement,
+  ArcElement,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  Filler,
+  RadialLinearScale,
+  Tooltip,
+  Legend,
+} from 'chart.js';
+
+import { Line, Radar, Doughnut, Bar } from 'react-chartjs-2';
+
+ChartJS.register(
+  LineElement,
+  ArcElement,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  Filler,
+  RadialLinearScale,
+  Tooltip,
+  Legend
+);
 
 const SimulationPage = () => {
   const [showPanel, setShowPanel] = useState(false);
@@ -59,6 +90,61 @@ const SimulationPage = () => {
   const [aiMaskArea, setAiMaskArea] = useState(0);
   const [animatedPlacementRatio, setAnimatedPlacementRatio] = useState(0);
   const isResizingRef = useRef(false); // 🔵 현재 리사이즈 중 여부
+
+  // 총합 = 1.0, 각 시간대별 평균 발전 비율 (예시)
+  const hourlyRatios = [
+    0.03, // 08시
+    0.06, // 09시
+    0.10, // 10시
+    0.14, // 11시
+    0.17, // 12시
+    0.14, // 13시
+    0.10, // 14시
+    0.08, // 15시
+    0.07, // 16시
+    0.06, // 17시
+    0.05  // 18시
+  ];
+
+  const yearly = parseFloat(energyOutput.yearly);
+  const seasonalData = {
+    봄: (yearly * 0.31).toFixed(1),
+    여름: (yearly * 0.26).toFixed(1),
+    가을: (yearly * 0.27).toFixed(1),
+    겨울: (yearly * 0.16).toFixed(1),
+  };
+
+  const installRatio = Math.round(Math.min(animatedPlacementRatio, 100));
+
+  const centerTextPlugin = {
+    id: 'centerText',
+    beforeDraw: (chart) => {
+      const { width, height, ctx } = chart;
+      const ratio = chart.config.options.plugins.centerText?.value ?? 0;
+
+      ctx.save();
+
+      ctx.font = 'bold 16px sans-serif';
+      ctx.fillStyle = '#333';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('설치율', width / 2, height / 2 - 12);
+
+      ctx.font = 'bold 22px sans-serif';
+      ctx.fillText(`${ratio}%`, width / 2, height / 2 + 12);
+
+      ctx.restore();
+    }
+  };
+
+
+
+  const roundedPlacementRatio = Math.round(animatedPlacementRatio);
+
+  const dailyProduction = parseFloat(energyOutput.daily); // ex. 50
+  const hourlyLabels = ['08시', '09시', '10시', '11시', '12시', '13시', '14시', '15시', '16시', '17시', '18시'];
+  const hourlyData = hourlyRatios.map(ratio => +(dailyProduction * ratio).toFixed(1));
+
 
   const cmToPx = (cm) => cm * 0.5;
   const MIN_WIDTH = 100;
@@ -942,8 +1028,9 @@ const SimulationPage = () => {
                   </div>
                   {/* <h2>설치 패널 상세</h2> */}
                   <div className="panel-content-row">
-                    <div className="panel-image-selection">
-                      <div className="panel-image-box">
+                    <div className="panel-upper-grid">
+                      {/* 패널 이미지 */}
+                      <div className="panel-image-box clickable">
                         <img
                           src={solarpanel2}
                           alt="패널"
@@ -958,137 +1045,157 @@ const SimulationPage = () => {
                           }}
                         />
                       </div>
+
+                      {/* 설치 개수 */}
+                      <div className="info-card">
+                        <img src={solar1} alt="설치 개수" className="info-icon" />
+                        <div>
+                          <div className="info-label">설치 패널 수</div>
+                          <div className="info-value">{placedPanels.length} 개</div>
+                        </div>
+                      </div>
+
+                      {/* 설치 면적 */}
+                      <div className="info-card">
+                        <img src={area1} alt="설치 면적" className="info-icon" />
+                        <div>
+                          <div className="info-label">설치 면적</div>
+                          <div className="info-value">{totalArea.toFixed(2)} ㎡</div>
+                        </div>
+                      </div>
+
+                      {/* 실제 설치 가능 수 */}
+                      <div className="info-card tooltip-container">
+                        <img src={solar2} alt="설치 가능 수" className="info-icon" />
+                        <div>
+                          <div className="info-label">
+                            실제 설치 가능 수 <span className="tooltip">❓<span className="tooltiptext">AI 분석 면적 기준으로<br />최대 설치 가능한 패널 수입니다.</span></span>
+                          </div>
+                          <div className="info-value">{Math.floor(totalArea / 2)} 개</div>
+                        </div>
+                      </div>
                     </div>
-                    <div className="panel-stats-row">
-                      <div className="panel-installation">
-                        <div className="panel-info">
-                          <label className="panel-label">설치 개수</label>
-                          <input
-                            type="number"
-                            value={placedPanels.length}
-                            className="panel-input"
-                            readOnly
-                          />
-                        </div>
-                        <div className="panel-info">
-                          <label className="panel-label">설치 면적</label>
-                          <input
-                            type="text"
-                            value={`${totalArea.toFixed(2)} ㎡`}
-                            className="panel-result-input"
-                            readOnly
-                          />
-                        </div>
-                        <div className="panel-info">
-                          <label className="panel-label">실제 설치 가능 수</label>
-                          <input
-                            type="text"
-                            value={`${Math.floor(totalArea / 2)} 개`}
-                            className="panel-input"
-                            readOnly
-                          />
-                        </div>
-                      </div>
-                      <div className="panel-estimate-box">
-                        <div className="panel-info">
-                          <label className="panel-label">
-                            일간 에너지 생산량
-                          </label>
-                          <input
-                            type="text"
-                            value={`${energyOutput.daily} kWh`}
-                            className="panel-day-input"
-                            readOnly
-                          />
-                        </div>
-                        <div className="panel-info">
-                          <label className="panel-label">
-                            월간 에너지 생산량
-                          </label>
-                          <input type="text" value={`${energyOutput.monthly} kWh`} className="panel-week-input" readOnly></input>
-                        </div>
-                        <div className="panel-info">
-                          <label className="panel-label">
-                            연간 에너지 생산량
-                          </label>
-                          <input type="text" value={`${energyOutput.yearly} kWh`} className="panel-month-input" readOnly></input>
-                        </div>
-                      </div>
-                      {/* 🔥 도넛 차트 추가 */}
-                      <div className="simulation-donut-chart">
-                        <ResponsiveContainer width="100%" height={200}>
-                          <PieChart>
-                            <Pie
-                              data={[
-                                { name: '설치된 면적', value: Math.min(animatedPlacementRatio, 100) },  // 🔥 capped to 100
-                                { name: '남은 면적', value: 100 - Math.min(animatedPlacementRatio, 100) },
-                              ]}
-                              startAngle={90}
-                              endAngle={-270}
-                              innerRadius={50}
-                              outerRadius={90}
-                              paddingAngle={0}
-                              dataKey="value"
-                              isAnimationActive={false}
-                            >
-                              <Cell
-                                key="installed"
-                                fill={
-                                  animatedPlacementRatio < 30
-                                    ? "#FF7043" // 연주황 (주의)
-                                    : animatedPlacementRatio < 70
-                                      ? "#FFD54F" // 노랑 (중간)
-                                      : "#66BB6A" // 초록 (충분)
-                                }
-                              />
-                              <Cell key="remaining" fill="#E0E0E0" /> {/* 남은 면적은 회색 */}
-                            </Pie>
-                          </PieChart>
-                        </ResponsiveContainer>
 
-                        <div style={{ textAlign: 'center', fontWeight: 'bold', fontSize: '1.2rem', marginTop: '8px' }}>
-                          설치율 {Math.min(placementRatio, 100).toFixed(1)}%
-                        </div>
-                      </div>
-
-                    </div>
-                  </div>
-
-                  <div className="complete-button-wrapper">
-                    <button
-                      className="ai-input-button"
-                      onClick={handleAIInference}
-                    >
-                      AI 자동 배치
-                    </button>
-                    <button
-                      className="clear-ai-button"
-                      onClick={() => {
-                        setAiDetections([]);
-
-                        setPlacedPanels([]); // 👉 설치 패널 초기화
-                        setAiPlacementMode(false);
-                        // 🔵 파란 Polygon 전부 제거
-                        polygonRefs.current.forEach((p) => p.setMap(null));
-                        polygonRefs.current = []; // 배열 비우기
-                        const map = window.naverMap;
-                        if (map) {
-                          map.setOptions({
-                            draggable: true,
-                            scrollWheel: true,
-                          });
+                    {/* 에너지 생산량 시각화 */}
+                    <h4 className="chart-section-title">시간대별 발전량</h4>
+                    <Bar
+                      height={120}
+                      data={{
+                        labels: hourlyLabels,
+                        datasets: [{
+                          label: '시간별 발전량',
+                          data: hourlyData,
+                          backgroundColor: '#4CAF50'
+                        }]
+                      }}
+                      options={{
+                        responsive: true,
+                        plugins: {
+                          legend: { display: false }
+                        },
+                        scales: {
+                          y: {
+                            beginAtZero: true
+                          }
                         }
                       }}
-                    >
-                      AI 배치 취소
-                    </button>
-                    <button
-                      className="complete-button"
-                      onClick={handleCaptureAndNavigate}
-                    >
-                      배치 완료
-                    </button>
+                    />
+
+                    <h4 className="chart-section-title">연간 발전량</h4>
+                    <Bar
+                      height={100}
+                      data={{
+                        labels: ['봄', '여름', '가을', '겨울'],
+                        datasets: [{
+                          label: '계절별 발전량 (kWh)',
+                          data: Object.values(seasonalData),
+                          backgroundColor: '#4CAF50',
+                          borderRadius: 8,
+                        }],
+                      }}
+                      options={{
+                        responsive: true,
+                        plugins: { legend: { display: false } },
+                        scales: {
+                          y: {
+                            beginAtZero: true,
+                            ticks: {
+                              callback: (val) => `${val} kWh`,
+                            },
+                          },
+                        },
+                      }}
+                    />
+
+                    <div className="simulation-donut-chart">
+                      <Doughnut
+                        data={{
+                          labels: ['설치된 면적', '남은 면적'],
+                          datasets: [{
+                            data: [installRatio, 100 - installRatio],
+                            backgroundColor: [
+                              installRatio < 30 ? '#FF7043'
+                                : installRatio < 70 ? '#FFD54F'
+                                  : '#66BB6A',
+                              '#E0E0E0'
+                            ],
+                            borderWidth: 1
+                          }]
+                        }}
+                        options={{
+                          responsive: true,
+                          maintainAspectRatio: false, // ✅ 반드시 false
+                          cutout: '70%',
+                          plugins: {
+                            legend: { display: false },
+                            centerText: {
+                              value: installRatio
+                            }
+                          }
+                        }}
+                        plugins={[centerTextPlugin]}
+                      />
+                    </div>
+
+
+
                   </div>
+                </div>
+
+                <div className="complete-button-wrapper">
+                  <button
+                    className="ai-input-button"
+                    onClick={handleAIInference}
+                  >
+                    패널 배치 시작
+                  </button>
+                  <button
+                    className="clear-ai-button"
+                    onClick={() => {
+                      setAiDetections([]);
+
+                      setPlacedPanels([]); // 👉 설치 패널 초기화
+                      setAiPlacementMode(false);
+                      // 🔵 파란 Polygon 전부 제거
+                      polygonRefs.current.forEach((p) => p.setMap(null));
+                      polygonRefs.current = []; // 배열 비우기
+                      const map = window.naverMap;
+                      if (map) {
+                        map.setOptions({
+                          draggable: true,
+                          scrollWheel: true,
+                        });
+                      }
+                    }}
+                  >
+                    패널 배치 취소
+                  </button>
+                  <button
+                    className="complete-button"
+                    onClick={handleCaptureAndNavigate}
+                  >
+                    패널 배치 완료
+                  </button>
                 </div>
               </div>
             )}
@@ -1149,7 +1256,7 @@ const SimulationPage = () => {
           </div>
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 
