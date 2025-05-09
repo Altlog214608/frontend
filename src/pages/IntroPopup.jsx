@@ -2,10 +2,14 @@
 import React from 'react';
 import '../components/common/css/IntroPopup.css';
 
-const IntroPopup = ({ onClose }) => {
+const IntroPopup = ({ onClose, children }) => {
+  // 팝업 내용 클릭 시 이벤트 버블링 방지
+  const handleContentClick = (e) => {
+    e.stopPropagation();
+  };
   return (
-    <div className="intro-modal-overlay">
-      <div className="intro-modal">
+    <div className="intro-modal-overlay" onClick={onClose}>
+      <div className="intro-modal" onClick={handleContentClick}>
         <button className="intro-modal-close" onClick={onClose}>✕</button>
         <div className="intro-modal-content">
           <div className="intro-modal-left">
@@ -23,6 +27,11 @@ const IntroPopup = ({ onClose }) => {
             <p>*탄소중립은 대기 중 온실가스 농도가 인간 활동에 의해 더 증가되지 않도록 순배출량이 0이 되도록 하는 것입니다.</p>
             <p>‘넷제로(Net-Zero)’라고도 하며, 배출량과 흡수량의 균형을 맞춰야 달성됩니다.</p>
             <div className="graph-img" />
+          </div>
+
+          {/* ✅ 여기 children 추가 */}
+          <div className="intro-video-container">
+            {children}
           </div>
         </div>
       </div>

@@ -498,6 +498,7 @@ section.section.section1.section-white.visible {
   overflow: hidden;
   cursor: pointer;
   transition: transform 0.3s ease;
+  position: relative; /* ✅ 반드시 추가 */
   opacity: 0;
   transform: translateY(30px);
   transition: opacity 0.8s ease-out, transform 0.8s ease-out;
@@ -523,7 +524,8 @@ section.section.section1.section-white.visible {
   object-fit: cover;
   display: block;
   border-radius: 16px;
-
+  position: relative; /* 또는 static */
+  z-index: 1;
 }
 
 .card:hover img {
@@ -535,16 +537,24 @@ section.section.section1.section-white.visible {
   height: 100%;
   object-fit: cover;
   display: block;
+  position: relative; /* 또는 static */
+  z-index: 1;
 }
 
 
 .card-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
   height: 30%;
-  background-color: white;
+  z-index: 2;
+  background-color: rgba(0, 0, 0, 0.5); /* ✅ 배경이 어두워야 흰 글씨 보임 */
+  color: white;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 1rem;
+  padding: 0.5rem;
   text-align: center;
 }
 
@@ -564,7 +574,7 @@ section.section.section1.section-white.visible {
   background-color: #e5e5e5;
   background-image: url(../../../assets/HomePage/back-4.jpg);
   background-size: cover;
-  height: 100vh;
+  height: 120vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -597,4 +607,38 @@ section.section.section1.section-white.visible {
 .card-title-overlay.visible {
   opacity: 1;
   transform: translateY(0);
+}
+
+.card-tooltip {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 3;
+}
+
+.card:hover .card-tooltip {
+  opacity: 1;
+}
+
+.card-cta-btn {
+  margin-top: 10px;
+  padding: 6px 12px;
+  background-color: #ffffff;
+  color: #000000;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: background 0.3s;
+}
+
+.card-cta-btn:hover {
+  background-color: #eeeeee;
 }
