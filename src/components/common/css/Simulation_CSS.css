@@ -426,3 +426,53 @@ body.no-scroll {
   margin: 8px 0 12px 0; /* 위 간격 줄이기 */
   position: relative;
 }
+
+.panel-button-topright {
+  position: fixed;
+  top: 100px;
+  right: 20px;
+  z-index: 3001;
+  display: flex;
+  gap: 8px; /* 버튼 간 간격 */
+}
+
+/* 공통 버튼 스타일 (기존 유지) */
+/* 공통 버튼 스타일 - 기존 유지하되 모서리를 더 둥글게 */
+.open-panel-button,
+.panel-mode-button {
+  background: white;
+  border: none;
+  border-radius: 12px;
+  padding: 6px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  cursor: pointer;
+  width: 80px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+/* 활성화된 버튼 강조 */
+.panel-mode-button.active {
+  outline: none;
+  box-shadow: 
+    0 0 0 2px #4CAF50,           /* 초록색 외곽선 */
+    0 4px 12px rgba(76, 175, 80, 0.4); /* 부드러운 초록빛 그림자 */
+  transform: scale(1.05); /* 살짝 확대 */
+  z-index: 3002;
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.panel-mode-button img,
+.open-panel-button img {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+}
+
+.open-panel-button:hover,
+.panel-mode-button:hover {
+  transform: translateY(-4px); /* lift up */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* deeper shadow */
+}

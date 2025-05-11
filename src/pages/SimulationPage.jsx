@@ -5,8 +5,9 @@ import solarpanel1 from "../assets/SimulationPage/solarpanel1.png";
 import solarpanel2 from "../assets/SimulationPage/solarpanel2.png";
 import simulation_button from "../assets/SimulationPage/simulation_button.png";
 import simulation_btn_mobile from "../assets/SimulationPage/simulation_btn_mobile.png";
-import sunlight_btn from "../assets/SimulationPage/sunlight_btn.png";
-import shadow_btn from "../assets/SimulationPage/shadow_btn.png";
+import sunlight_btn from "../assets/SimulationPage/sun_icon_1.png";
+import shadow_btn from "../assets/SimulationPage/shadow_icon_1.png";
+import home_btn from "../assets/SimulationPage/home_icon_1.png";
 
 import { useNavigate } from "react-router-dom";
 import NaverMap from "../components/map/NaverMap";
@@ -115,6 +116,11 @@ const SimulationPage = () => {
   };
 
   const installRatio = Math.round(Math.min(animatedPlacementRatio, 100));
+
+  const handleResetToHome = () => {
+    setUseVMap(false);
+    setShowSolarOverlay(false);
+  };
 
   const centerTextPlugin = {
     id: 'centerText',
@@ -270,6 +276,7 @@ const SimulationPage = () => {
     }
   };
 
+
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === "Shift") setIsShiftPressed(true);
@@ -301,18 +308,30 @@ const SimulationPage = () => {
     return aiMaskArea > 0 ? (totalArea / aiMaskArea) * 100 : 0;
   }, [totalArea, aiMaskArea]);
 
+  // px → meter 비율 계산 개선 (지도 줌레벨 반영 + 정밀 보정 제거)
   const getPixelToMeterRatio = useCallback(() => {
     const map = window.naverMap;
+    if (!map || !map.getProjection) return 0.25; // fallback
+
     const proj = map.getProjection();
     const center = map.getCenter();
-    const offsetLat = center.lat() + 0.0001;
-    const pixel1 = proj.fromCoordToPoint(center);
-    const pixel2 = proj.fromCoordToPoint(new window.naver.maps.LatLng(offsetLat, center.lng()));
-    const pixelDistance = Math.abs(pixel2.y - pixel1.y);
-    const meterDistance = computeDistance(center.lat(), center.lng(), offsetLat, center.lng());
-    const ratio = window.devicePixelRatio || 1;
-    return (meterDistance / pixelDistance) / ratio;
+
+    // 중심 기준으로 위도 고정, 경도 약 0.001도 차이 (약 90m)
+    const offsetLng = center.lng() + 0.001;
+    const point1 = proj.fromCoordToPoint(center);
+    const point2 = proj.fromCoordToPoint(new window.naver.maps.LatLng(center.lat(), offsetLng));
+
+    const pixelDistance = Math.abs(point2.x - point1.x);
+    const meterDistance = computeDistance(center.lat(), center.lng(), center.lat(), offsetLng);
+
+    const pxToMeter = meterDistance / pixelDistance;
+
+    console.log("🧮 실제 픽셀당 미터 거리:", pxToMeter.toFixed(4));
+    return pxToMeter;
   }, [computeDistance]);
+
+
+
 
   const calculateAIMaskArea = useCallback(() => {
     const map = window.naverMap;
@@ -320,40 +339,34 @@ const SimulationPage = () => {
 
     const proj = map.getProjection();
     const canvasRect = canvasRef.current.getBoundingClientRect();
-
     let totalMaskArea = 0;
 
     aiDetections.forEach((det) => {
-      if (det.box && det.box.length === 4) {
-        const offsetX = window.innerWidth * 0.1;
-        const x1 = det.box[0] + offsetX + canvasRect.left;
-        const y1 = det.box[1] + canvasRect.top;
-        const x2 = det.box[2] + offsetX + canvasRect.left;
-        const y2 = det.box[3] + canvasRect.top;
+      if (det.mask && det.mask.length > 2) {
+        const offsetX = window.innerWidth * 0.2;
 
-        // 박스 4개 모서리 계산
-        const corners = [
-          new window.naver.maps.Point(x1, y1),
-          new window.naver.maps.Point(x2, y1),
-          new window.naver.maps.Point(x2, y2),
-          new window.naver.maps.Point(x1, y2),
-        ];
+        const polygonPoints = det.mask.map(([y, x]) =>
+          new window.naver.maps.Point(x + offsetX + canvasRect.left, y + canvasRect.top)
+        );
 
-        const geoCoords = corners.map((pt) =>
+        const geoCoords = polygonPoints.map((pt) =>
           proj.fromPageXYToCoord(pt)
         );
 
         const polygon = new window.naver.maps.Polygon({ paths: geoCoords, map });
         const area = polygon.getAreaSize();
-        polygon.setMap(null);
+        polygon.setMap(null); // 지도에 그리지 않음
 
         totalMaskArea += area;
       }
     });
 
-    const finalArea = totalMaskArea / 1.37; // 🔥 패널이랑 똑같이 35% 보정 적용
+    const finalArea = totalMaskArea; // mask 면적은 polygon 기준이므로 별도 보정 불필요
+    console.log("🟩 AI 마스크 총 면적 (㎡):", finalArea.toFixed(2));
     setAiMaskArea(finalArea);
   }, [aiDetections]);
+
+
 
 
   const loadStationCSV = useCallback(async () => {
@@ -415,6 +428,9 @@ const SimulationPage = () => {
     };
   }, []);
 
+  useEffect(() => {
+    console.log("📊 설치율 (%):", placementRatio.toFixed(2));
+  }, [placementRatio]);
 
   const handleCalculateProduction = useCallback(async () => {
     const map = window.naverMap; // ✅ 선언이 필요함
@@ -436,21 +452,19 @@ const SimulationPage = () => {
   }, [totalArea, handleCalculateProduction]);
 
   // ✅ 패널 면적 계산: 픽셀 면적 * (1px당 m)^2 * 보정계수 → 실제 m^2
-  useEffect(() => {
-    const map = window.naverMap;
-    if (!map || !map.getProjection) return;
-    const pxToMeter = getPixelToMeterRatio();
+  // useEffect(() => {
+  //   const map = window.naverMap;
+  //   if (!map || !map.getProjection) return;
+  //   const pxToMeter = getPixelToMeterRatio();
 
-    const correctionFactor = 425.7 / 283.27; // 🔧 실측 면적 / getAreaSize 기준값
+  //   const total = placedPanels.reduce((sum, panel) => {
+  //     const pixelArea = panel.width * panel.height;
+  //     const realArea = pixelArea * (pxToMeter ** 2); // ✅ 보정 계수 제거
+  //     return sum + realArea;
+  //   }, 0);
 
-    const total = placedPanels.reduce((sum, panel) => {
-      const pixelArea = panel.width * panel.height;
-      const realArea = pixelArea * (pxToMeter ** 2) * correctionFactor; // 💡 보정 적용
-      return sum + realArea;
-    }, 0);
-
-    setTotalArea(total);
-  }, [placedPanels, getPixelToMeterRatio]);
+  //   setTotalArea(total);
+  // }, [placedPanels, getPixelToMeterRatio]);
 
   // ✅ placingPanel 상태를 ref에 동기화
   useEffect(() => {
@@ -500,6 +514,7 @@ const SimulationPage = () => {
   }, []);
 
 
+  // 실제 설치된 패널 면적 계산 개선
   useEffect(() => {
     const map = window.naverMap;
     if (!map || !map.getProjection || !canvasRef.current) return;
@@ -507,57 +522,92 @@ const SimulationPage = () => {
     const proj = map.getProjection();
     const canvasRect = canvasRef.current.getBoundingClientRect();
 
-    let total = 0;
-
-    placedPanels.forEach((panel) => {
-      const { x, y, width, height, rotation } = panel;
-      const rad = (rotation * Math.PI) / 180;
+    const total = placedPanels.reduce((sum, panel) => {
+      const rad = (panel.rotation * Math.PI) / 180;
 
       const corners = [
-        { dx: -width / 2, dy: -height / 2 },
-        { dx: width / 2, dy: -height / 2 },
-        { dx: width / 2, dy: height / 2 },
-        { dx: -width / 2, dy: height / 2 },
+        { dx: -panel.width / 2, dy: -panel.height / 2 },
+        { dx: panel.width / 2, dy: -panel.height / 2 },
+        { dx: panel.width / 2, dy: panel.height / 2 },
+        { dx: -panel.width / 2, dy: panel.height / 2 },
       ].map(({ dx, dy }) => {
         const rotatedX = dx * Math.cos(rad) - dy * Math.sin(rad);
         const rotatedY = dx * Math.sin(rad) + dy * Math.cos(rad);
         return new window.naver.maps.Point(
-          x + rotatedX + canvasRect.left,
-          y + rotatedY + canvasRect.top
+          panel.x + rotatedX + canvasRect.left,
+          panel.y + rotatedY + canvasRect.top
         );
       });
 
       const geoCoords = corners.map((pt) =>
-        proj.fromPageXYToCoord(
-          new window.naver.maps.Point(pt.x, pt.y)
-        )
+        proj.fromPageXYToCoord(new window.naver.maps.Point(pt.x, pt.y))
       );
 
-      const polygon = new window.naver.maps.Polygon({ paths: geoCoords, map });
-      const area = polygon.getAreaSize();
-      polygon.setMap(null);
+      const polygon = new window.naver.maps.Polygon({ paths: geoCoords, map: null });
+      const area = polygon.getAreaSize(); // ✅ 실제 지도상 m²로 자동 변환
+      return sum + area;
+    }, 0);
 
-      total += area;
-    });
-
-    const finalArea = total / 1.37; // 약 35% 과대 보정
-    setTotalArea(finalArea);
+    console.log("🟦 총 패널 설치 면적 (㎡):", total.toFixed(2));
+    setTotalArea(total);
   }, [placedPanels]);
+
+
+
+
+  useEffect(() => {
+    const map = window.naverMap;
+    if (!map || !map.getProjection) return;
+
+    const ratio = getPixelToMeterRatio();
+    console.log("🧮 픽셀당 미터 거리:", ratio.toFixed(4));
+  }, []);
+
+  useEffect(() => {
+    const mapContainer = document.querySelector('.simulation-canvas');
+    const handleDblClick = (e) => {
+      if (aiPlacementMode) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+    };
+
+    if (mapContainer) {
+      mapContainer.addEventListener("dblclick", handleDblClick, true);
+    }
+
+    return () => {
+      if (mapContainer) {
+        mapContainer.removeEventListener("dblclick", handleDblClick, true);
+      }
+    };
+  }, [aiPlacementMode]);
 
 
   useEffect(() => {
     placingPanelRef.current = placingPanel;
   }, [placingPanel]);
 
+  // useEffect(() => {
+  //   const map = window.naverMap;
+  //   if (!map) return;
+
+  //   if (aiPlacementMode) {
+  //     map.setOptions({ scrollWheel: false, draggable: false });
+  //   } else {
+  //     map.setOptions({ scrollWheel: true, draggable: true });
+  //   }
+  // }, [aiPlacementMode]);
+
   useEffect(() => {
     const map = window.naverMap;
     if (!map) return;
 
-    if (aiPlacementMode) {
-      map.setOptions({ scrollWheel: false, draggable: false });
-    } else {
-      map.setOptions({ scrollWheel: true, draggable: true });
-    }
+    map.setOptions({
+      scrollWheel: !aiPlacementMode,
+      draggable: !aiPlacementMode,
+      disableDoubleClickZoom: aiPlacementMode,  // 🔥 추가!
+    });
   }, [aiPlacementMode]);
 
   useEffect(() => {
@@ -878,6 +928,7 @@ const SimulationPage = () => {
               onMouseDown={handleMouseDown}
               onMouseMove={handleMouseMove}
               onMouseUp={handleMouseUp}
+
               style={{ position: "relative" }}
             >
               {useVMap ? (
@@ -1006,18 +1057,7 @@ const SimulationPage = () => {
               />
             )}
 
-            {/* 패널 보기 버튼 */}
-            <div className="panel-button-topright">
-              <button
-                className="open-panel-button"
-                onClick={() => setShowPanel(prev => !prev)}
-              >
-                <img
-                  src={isMobile ? simulation_btn_mobile : simulation_button}
-                  alt="패널 보기 버튼"
-                />
-              </button>
-            </div>
+
 
             {/* 패널 팝업 */}
             {showPanel && (
@@ -1200,7 +1240,60 @@ const SimulationPage = () => {
               </div>
             )}
 
-            {/* 그림자 분석 맵 전환 버튼 */}
+            <div className="panel-button-topright">
+              <button
+                className={`panel-mode-button ${!showSolarOverlay && !useVMap ? 'active' : ''}`}
+                onClick={() => {
+                  setUseVMap(false);
+                  setShowSolarOverlay(false);
+                }}
+              >
+                <img src={home_btn} alt="기본 지도" />
+              </button>
+              <button
+                className={`panel-mode-button ${showSolarOverlay ? 'active' : ''}`}
+                onClick={() => {
+                  setUseVMap(false);
+                  setShowSolarOverlay(true);
+                }}
+              >
+                <img src={sunlight_btn} alt="일조량 모드" />
+              </button>
+              <button
+                className={`panel-mode-button ${useVMap ? 'active' : ''}`}
+                onClick={() => {
+                  setUseVMap(true);
+                  setShowSolarOverlay(false);
+                }}
+              >
+                <img src={shadow_btn} alt="그림자 모드" />
+              </button>
+              <button
+                className="open-panel-button"
+                onClick={() => setShowPanel(prev => !prev)}
+              >
+                <img
+                  src={isMobile ? simulation_btn_mobile : simulation_button}
+                  alt="패널 보기 버튼"
+                />
+              </button>
+            </div>
+
+
+            {/* 
+            <div className="panel-button-topright">
+              <button
+                className="open-panel-button"
+                onClick={() => setShowPanel(prev => !prev)}
+              >
+                <img
+                  src={isMobile ? simulation_btn_mobile : simulation_button}
+                  alt="패널 보기 버튼"
+                />
+              </button>
+            </div>
+
+ 
             <div className="switch-btn">
               <button
                 className="switch-button"
@@ -1210,7 +1303,7 @@ const SimulationPage = () => {
               </button>
             </div>
 
-            {/* 일조량 버튼 */}
+
             <div className="sunlight-filter-button">
               <button
                 className="filter-button"
@@ -1218,7 +1311,7 @@ const SimulationPage = () => {
               >
                 <img src={sunlight_btn} alt="일조량 버튼" />
               </button>
-            </div>
+            </div> */}
 
             {/* 🔳 AI 자동배치 모드일 때만 비활성화 레이어 추가 */}
             {aiPlacementMode && (
